@@ -6,38 +6,48 @@ class NaiveBayes():
 
     def fit(self, X, y):
         # TODO: Calcula la probabilidad de que una muestra sea positiva P(y=1)
-        self.prior_positives = 
+        self.prior_positives = np.sum(y==1)/len(y)
 
         # TODO: Calcula la probabilidad de que una muestra sea negativa P(y=0)
-        self.prior_negative = 
+        self.prior_negative = np.sum(y==0)/len(y)
 
         # TODO: Para cada palabra del vocabulario x_i
         # calcula la probabilidad de: P(x_i| y=1)
         # Guardalas en un arreglo de numpy:
         # self._likelihoods_positives = [P(x_1| y=1), P(x_2| y=1), ..., P(x_n| y=1)]
-        self._likelihoods_positives = 
+        self._likelihoods_positives = []
+        for i in range(X.shape[1]):
+            PosCount=np.sum((X[:,i]==1)&(y==1))
+            PosLikelihood= (PosCount+self.alpha)/(np.sum(y==1)+2*self.alpha)
+            self._likelihoods_positives.append(PosLikelihood)
+        self._likelihoods_positives =  np.array(self._likelihoods_positives)
         
         # TODO:  Para cada palabra del vocabulario x_i, calcula P(x_i| y=0)
         # Guardalas en un arreglo de numpy:
         # self._likelihoods_negatives = [P(x_1| y=0), P(x_2| y=0), ..., P(x_n| y=0)]
 
-        self._likelihoods_negatives = _likelihoods_negatives
+        self._likelihoods_negatives = []
+        for i in range(X.shape[1]):
+            NegCount=np.sum((X[:,i]==0)&(y==0))
+            NegLikelihood= (NegCount+self.alpha)/(np.sum(y==1)+2*self.alpha)
+            self._likelihoods_negatives.append(NegLikelihood)
+        self._likelihoods_negatives =  np.array(self._likelihoods_negatives)
         return self
 
-    def predict(self, X):
+  #-  def predict(self, X):
         # TODO: Calcula la distribución posterior para la clase 1 dado los nuevos puntos X
         # utilizando el prior y los likelihoods calculados anteriormente
         # P(y = 1 | X) = P(y=1) * P(x1|y=1) * P(x2|y=1) * ... * P(xn|y=1)
-        posterior_positive = 
+       #- posterior_positive = 
 
         # TODO: Calcula la distribución posterior para la clase 0 dado los nuevos puntos X
         # utilizando el prior y los likelihoods calculados anteriormente
         # P(y = 0 | X) = P(y=0) * P(x1|y=0) * P(x2|y=0) * ... * P(xn|y=0)
-        posterior_negative = 
+      #-  posterior_negative = 
 
         # TODO: Determina a que clase pertenece la muestra X dado las distribuciones posteriores
-        clase = 
-        return clase
+      #-  clase = 
+     #-   return clase
     
     def score(self, X, y):
         y_pred = self.predict(X)
