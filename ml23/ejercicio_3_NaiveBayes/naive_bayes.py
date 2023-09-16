@@ -54,10 +54,7 @@ class NaiveBayes():
             else:
                 posterior_negative = (1-self._likelihoods_negatives[j])* posterior_negative
         # TODO: Determina a que clase pertenece la muestra X dado las distribuciones posteriores
-        if(posterior_positive>posterior_negative):
-            clase = 1
-        else:
-            clase = 0
+        clase = 
         return clase
     
     def score(self, X, y):
