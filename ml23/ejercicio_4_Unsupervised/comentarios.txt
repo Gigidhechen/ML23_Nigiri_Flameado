@@ -1,0 +1,8 @@
+
+Clustering:
+- el ejercicio está vacio
+
+Reducción de dimensionalidad:
+- Hay muchas preguntas sin contestar
+- Tienen errores en el notebook
+- Se omite TSNE en el de baja dimensionalidad por que no se puede mapear los datos de prueba al mismo espacio vectorial que al que se mapean los datos de entrenamiento.
