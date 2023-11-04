@@ -25,7 +25,10 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
+
+
+ml23/ejercicio_6-cnns/cifar_net.pth
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -134,4 +137,4 @@ dmypy.json
 *.csv
 *.pth
 */models/*.pt
-*/data/
+**/data/
