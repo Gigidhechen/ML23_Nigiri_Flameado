@@ -32,9 +32,13 @@ def validation_step(val_loader, net, cost_function):
         batch_labels = batch_labels.to(device)
         with torch.inference_mode():
             # TODO: realiza un forward pass, calcula el loss y acumula el costo
-            ...
+            outputs=net(batch_imgs)
+            costo= cost_function(outputs,batch_labels)
+            costo.backward()
+            net.optimizer.step()
     # TODO: Regresa el costo promedio por minibatch
-    return ...
+        val_loss=val_loss/2000
+    return val_loss
 
 def train():
     # Hyperparametros
@@ -59,10 +63,11 @@ def train():
                      n_classes = 7)
 
     # TODO: Define la funcion de costo
-    criterion = ...
+    criterion = nn.CrossEntropyLoss
 
     # Define el optimizador
-    optimizer = ...
+    optimizer = optim.Adam(modelo.parameters(),
+                           lr=1e-4)
 
     best_epoch_loss = np.inf
     for epoch in range(n_epochs):
@@ -71,7 +76,11 @@ def train():
             batch_imgs = batch['transformed']
             batch_labels = batch['label']
             # TODO Zero grad, forward pass, backward pass, optimizer step
-            ...
+            optimizer.zero_grad()
+            preds=modelo(batch_imgs)
+            costo=criterion(preds,batch_labels)
+            costo.backward()
+            optimizer.step()
 
             # TODO acumula el costo
             ...
