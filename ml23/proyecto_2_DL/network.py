@@ -16,7 +16,16 @@ class Network(nn.Module):
 
         # TODO: Define las capas de tu red
         net=nn.Sequential(
-            nn.Conv2d(input_dim,16,5),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=5), #4,32,24,24
+            nn.ReLU(),
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), # 4, 64, 20, 20
+            nn.ReLU(),
+            nn.Flatten(),
+            nn.Linear(64*20*20,1024),
+            nn.ReLU(),
+            nn.Linear(1024,10),
+            nn.Conv2d(input_dim,16,5)
         )
         self.to(self.device)
  
@@ -26,6 +35,8 @@ class Network(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # TODO: Define la propagacion hacia adelante de tu red
+        logits = self.net(x)
+        proba = torch.softmax(logits, dim=1)
         return logits, proba
 
     def predict(self, x):

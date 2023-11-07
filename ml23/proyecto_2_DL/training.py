@@ -83,15 +83,17 @@ def train():
             optimizer.step()
 
             # TODO acumula el costo
-            ...
+            train_loss_sum += costo.item()
 
         # TODO Calcula el costo promedio
-        train_loss = ...
+        train_loss = train_loss / len(train_loader)
         val_loss = validation_step(val_loader, modelo, criterion)
         tqdm.write(f"Epoch: {epoch}, train_loss: {train_loss:.2f}, val_loss: {val_loss:.2f}")
 
         # TODO guarda el modelo si el costo de validación es menor al mejor costo de validación
-        ...
+        if val_loss < best_epoch_loss:
+            best_epoch_loss = val_loss
+            torch.save(modelo.state_dict(), 'mejor_modelo.pth')
         plotter.on_epoch_end(epoch, train_loss, val_loss)
     plotter.on_train_end()
 
