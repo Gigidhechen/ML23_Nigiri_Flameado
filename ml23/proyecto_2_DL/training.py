@@ -25,17 +25,17 @@ def validation_step(val_loader, net, cost_function):
         - val_loss (float): el costo total (promedio por minibatch) de todos los datos de validación
     '''
     val_loss = 0.0
+    torch.set_grad_enabled(False)
     for i, batch in enumerate(val_loader, 0):
         batch_imgs = batch['transformed']
-        batch_labels = batch['label']
+        batch_labels = batch['label'].cuda()
         device = net.device
         batch_labels = batch_labels.to(device)
         with torch.inference_mode():
             # TODO: realiza un forward pass, calcula el loss y acumula el costo
-            outputs=net(batch_imgs)
+            outputs,_=net(batch_imgs)
             costo= cost_function(outputs,batch_labels)
-            costo.backward()
-            net.optimizer.step()
+            val_loss+=costo.item()
     # TODO: Regresa el costo promedio por minibatch
         val_loss=val_loss/2000
     return val_loss
@@ -69,10 +69,11 @@ def train():
     optimizer = optim.Adam(modelo.parameters(),
                            lr=learning_rate)
     best_epoch_loss = np.inf
+    torch.set_grad_enabled(True)
     for epoch in range(n_epochs):
         train_loss = 0
         for i, batch in enumerate(tqdm(train_loader, desc=f"Epoch: {epoch}")):
-            batch_imgs = batch['transformed']
+            batch_imgs = batch['transformed'].cuda()
             batch_labels = batch['label'].cuda()
             # TODO Zero grad, forward pass, backward pass, optimizer step
             optimizer.zero_grad()
