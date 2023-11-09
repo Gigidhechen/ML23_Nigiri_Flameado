@@ -42,7 +42,7 @@ def validation_step(val_loader, net, cost_function):
 
 def train():
     # Hyperparametros
-    learning_rate = 1e-4
+    learning_rate= 1e-4
     n_epochs=100
     batch_size = 256
 
@@ -59,31 +59,31 @@ def train():
 
     plotter = PlotLosses()
     # Instanciamos tu red
-    modelo = Network(input_dim = 48,
+    modelo = Network(input_dim =48,
                      n_classes = 7)
 
     # TODO: Define la funcion de costo
-    criterion = nn.CrossEntropyLoss
+    criterion = nn.CrossEntropyLoss()
 
     # Define el optimizador
     optimizer = optim.Adam(modelo.parameters(),
-                           lr=1e-4)
-
+                           lr=learning_rate)
     best_epoch_loss = np.inf
     for epoch in range(n_epochs):
         train_loss = 0
         for i, batch in enumerate(tqdm(train_loader, desc=f"Epoch: {epoch}")):
             batch_imgs = batch['transformed']
-            batch_labels = batch['label']
+            batch_labels = batch['label'].cuda()
             # TODO Zero grad, forward pass, backward pass, optimizer step
             optimizer.zero_grad()
-            preds=modelo(batch_imgs)
+            preds, _=modelo(batch_imgs)
             costo=criterion(preds,batch_labels)
             costo.backward()
             optimizer.step()
 
             # TODO acumula el costo
-            train_loss_sum += costo.item()
+
+            train_loss += costo.item()
 
         # TODO Calcula el costo promedio
         train_loss = train_loss / len(train_loader)

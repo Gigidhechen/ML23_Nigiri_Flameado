@@ -15,17 +15,17 @@ class Network(nn.Module):
         out_dim = 7
 
         # TODO: Define las capas de tu red
-        net=nn.Sequential(
+        self.net=nn.Sequential(
+            nn.Conv2d(1,16,5), # 256, 16, 44, 44
             nn.ReLU(),
-            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=5), #4,32,24,24
+            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=5), #256, 32, 40, 40
             nn.ReLU(),
-            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), # 4, 64, 20, 20
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), #256, 64, 36, 36
             nn.ReLU(),
             nn.Flatten(),
-            nn.Linear(64*20*20,1024),
+            nn.Linear(64*36*36,1024),
             nn.ReLU(),
-            nn.Linear(1024,10),
-            nn.Conv2d(input_dim,16,5)
+            nn.Linear(1024,7),
         )
         self.to(self.device)
  
@@ -35,7 +35,7 @@ class Network(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # TODO: Define la propagacion hacia adelante de tu red
-        logits = self.net(x)
+        logits = self.net(x.cuda())
         proba = torch.softmax(logits, dim=1)
         return logits, proba
 
