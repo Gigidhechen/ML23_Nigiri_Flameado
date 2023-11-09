@@ -22,7 +22,7 @@ class Network(nn.Module):
             nn.ReLU(),
             nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), #256, 64, 36, 36
             nn.ReLU(),
-            nn.Flatten(),
+            nn.Flatten(start_dim=1),
             nn.Linear(64*36*36,1024),
             nn.ReLU(),
             nn.Linear(1024,7),

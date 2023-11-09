@@ -25,7 +25,6 @@ def validation_step(val_loader, net, cost_function):
         - val_loss (float): el costo total (promedio por minibatch) de todos los datos de validación
     '''
     val_loss = 0.0
-    torch.set_grad_enabled(False)
     for i, batch in enumerate(val_loader, 0):
         batch_imgs = batch['transformed']
         batch_labels = batch['label'].cuda()
@@ -37,7 +36,7 @@ def validation_step(val_loader, net, cost_function):
             costo= cost_function(outputs,batch_labels)
             val_loss+=costo.item()
     # TODO: Regresa el costo promedio por minibatch
-        val_loss=val_loss/2000
+    val_loss=val_loss/len(val_loader)
     return val_loss
 
 def train():
@@ -69,9 +68,9 @@ def train():
     optimizer = optim.Adam(modelo.parameters(),
                            lr=learning_rate)
     best_epoch_loss = np.inf
-    torch.set_grad_enabled(True)
     for epoch in range(n_epochs):
         train_loss = 0
+        val_loss = 0
         for i, batch in enumerate(tqdm(train_loader, desc=f"Epoch: {epoch}")):
             batch_imgs = batch['transformed'].cuda()
             batch_labels = batch['label'].cuda()
@@ -94,7 +93,7 @@ def train():
         # TODO guarda el modelo si el costo de validación es menor al mejor costo de validación
         if val_loss < best_epoch_loss:
             best_epoch_loss = val_loss
-            torch.save(modelo.state_dict(), 'mejor_modelo.pth')
+            modelo.save_model('mejor_modelo.pth')
         plotter.on_epoch_end(epoch, train_loss, val_loss)
     plotter.on_train_end()
 
