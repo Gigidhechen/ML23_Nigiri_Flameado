@@ -26,7 +26,7 @@ def predict(img_title_paths):
     '''
     # Cargar el modelo
     modelo = Network(48, 7)
-    modelo.load_model("mejor_modelo2.pth")
+    modelo.load_model("mejor_modelo.pth")
     for path in img_title_paths:
         # Cargar la imagen
         # np.ndarray, torch.Tensor
@@ -53,5 +53,5 @@ def predict(img_title_paths):
 
 if __name__=="__main__":
     # Direcciones relativas a este archivo
-    img_paths = ["./test_imgs/happy.png"]
+    img_paths = ["./test_imgs/enojada.jpeg"]
     predict(img_paths)

@@ -40,6 +40,8 @@ class Network(nn.Module):
         return logits, proba
 
     def predict(self, x):
+        if len(x.shape) == 3:
+            x = x.unsqueeze(1)
         with torch.inference_mode():
             return self.forward(x)
 
