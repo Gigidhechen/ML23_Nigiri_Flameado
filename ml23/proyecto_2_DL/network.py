@@ -18,14 +18,18 @@ class Network(nn.Module):
         self.net=nn.Sequential(
             nn.Conv2d(1,16,5), # 256, 16, 44, 44
             nn.ReLU(),
-            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=5), #256, 32, 40, 40
+            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=5), #40, 40
             nn.ReLU(),
-            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), #256, 64, 36, 36
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), #36, 36
+            nn.ReLU(),
+            nn.Conv2d(in_channels=64,out_channels=128,kernel_size=5), #32, 32
             nn.ReLU(),
             nn.Flatten(start_dim=1),
-            nn.Linear(64*36*36,1024),
+            nn.Linear(128*32*32,1024),
             nn.ReLU(),
-            nn.Linear(1024,7),
+            nn.Linear(1024,512),
+            nn.ReLU(),
+            nn.Linear(512,7),
         )
         self.to(self.device)
  
