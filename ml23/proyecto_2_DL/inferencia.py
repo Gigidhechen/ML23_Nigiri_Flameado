@@ -26,7 +26,7 @@ def predict(img_title_paths):
     '''
     # Cargar el modelo
     modelo = Network(48, 7)
-    modelo.load_model("mejor_modelo.pth")
+    modelo.load_model("modelo16Train.pth")
     for path in img_title_paths:
         # Cargar la imagen
         # np.ndarray, torch.Tensor
@@ -53,7 +53,29 @@ def predict(img_title_paths):
 
 if __name__=="__main__":
     # Direcciones relativas a este archivo
-    img_paths = ["./test_imgs/enojada.jpeg",
+    img_paths = [
                  "./test_imgs/Brandon.jpg",
-                 "./test_imgs/happy.png"]
+                 "./test_imgs/Disgusto 1.png",
+                 "./test_imgs/Disgusto 2.png",
+                 "./test_imgs/Disgusto 3.png",
+                 "./test_imgs/Disgusto 4.png",
+                 "./test_imgs/Enojo 1.png",
+                 "./test_imgs/Enojo 2.png",
+                 "./test_imgs/Feliz 1.png",
+                 "./test_imgs/Feliz 2.png",
+                 "./test_imgs/Feliz 3.png",
+                 "./test_imgs/Feliz 4.png",
+                 "./test_imgs/Feliz 5.png",
+                 "./test_imgs/Miedo 1.png",
+                 "./test_imgs/Neutro 1.png",
+                 "./test_imgs/Neutro 2.png",
+                 "./test_imgs/Neutro 3.png",
+                 "./test_imgs/Neutro 4.png",
+                 "./test_imgs/Neutro 5.png",
+                 "./test_imgs/Sorpresa 1.png",
+                 "./test_imgs/Sorpresa 2.png",
+                 "./test_imgs/Sorpresa 3.png",
+                 "./test_imgs/Sorpresa 4.png",
+                 "./test_imgs/Sorpresa 5.png",
+                 "./test_imgs/Sorpresa Juan.png",]
     predict(img_paths)

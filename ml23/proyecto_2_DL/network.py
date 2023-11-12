@@ -16,20 +16,16 @@ class Network(nn.Module):
 
         # TODO: Define las capas de tu red
         self.net=nn.Sequential(
-            nn.Conv2d(1,16,5), # 256, 16, 44, 44
+            nn.Conv2d(1,16,8), # 256, 16, 41, 41
             nn.ReLU(),
-            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=5), #40, 40
+            nn.Conv2d(in_channels=16,out_channels=32,kernel_size=8), #34, 34
             nn.ReLU(),
-            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=5), #36, 36
-            nn.ReLU(),
-            nn.Conv2d(in_channels=64,out_channels=128,kernel_size=5), #32, 32
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=8), #27, 27
             nn.ReLU(),
             nn.Flatten(start_dim=1),
-            nn.Linear(128*32*32,1024),
+            nn.Linear(64*27*27,512),
             nn.ReLU(),
-            nn.Linear(1024,512),
-            nn.ReLU(),
-            nn.Linear(512,7),
+            nn.Linear(512 ,7)
         )
         self.to(self.device)
  
