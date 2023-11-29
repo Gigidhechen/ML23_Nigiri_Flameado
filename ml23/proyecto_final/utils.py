@@ -33,7 +33,6 @@ def get_transforms(split, img_size):
     else:
         transforms = torchvision.transforms.Compose([
             *common,
-            torchvision.transforms.Normalize((mean,), (std,))
         ])
     
     # For visualization
