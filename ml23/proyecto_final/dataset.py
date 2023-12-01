@@ -23,7 +23,10 @@ def get_loader(split, batch_size, shuffle=True, num_workers=0):
     dataset = datasets.MNIST(root=file_path,
                       train=_trainign,
                       download=True,
-                      transform=transforms.ToTensor())
+                      transform=transforms.Compose([
+                          transforms.ToTensor(),
+                          transforms.RandomInvert()
+                          ]))
     dataloader = DataLoader(
                 dataset,
                 batch_size=batch_size,
