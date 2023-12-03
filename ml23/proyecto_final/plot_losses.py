@@ -31,5 +31,5 @@ class PlotLosses():
     def on_train_end(self):
         plt.show()
         today = dt.datetime.now().strftime("%Y-%m-%d")
-        losses_file = file_path/ f'figures/losses_{today}.png'
+        losses_file = file_path/ f'figures/figure_2.png'
         plt.savefig(losses_file)

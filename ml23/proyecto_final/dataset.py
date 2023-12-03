@@ -25,7 +25,10 @@ def get_loader(split, batch_size, shuffle=True, num_workers=0):
                       download=True,
                       transform=transforms.Compose([
                           transforms.ToTensor(),
-                          transforms.RandomInvert()
+                          transforms.RandomInvert(),
+                          transforms.GaussianBlur(kernel_size=(7,13),sigma=(0.1,0.2)),
+                          transforms.RandomRotation(degrees=(0,45)),
+                          transforms.ColorJitter(brightness=0.5, hue=0.5)
                           ]))
     dataloader = DataLoader(
                 dataset,
