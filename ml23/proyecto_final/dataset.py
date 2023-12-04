@@ -28,7 +28,7 @@ def get_loader(split, batch_size, shuffle=True, num_workers=0):
                           transforms.RandomInvert(),
                           transforms.GaussianBlur(kernel_size=(3,5),sigma=(0.1,0.2)),
                           transforms.RandomRotation(degrees=(0,25)),
-                          transforms.ColorJitter(brightness=0.5, hue=0.3)
+                          transforms.ColorJitter(brightness=0.5, contrast=0.4, saturation=0.3, hue=0.5)
                           ]))
     dataloader = DataLoader(
                 dataset,

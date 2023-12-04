@@ -5,7 +5,9 @@ import os
 import pathlib
 import numpy as np
 import torch
+import torch.nn as nn
 import torchvision
+from dataset import get_loader
 from utils import to_numpy, get_transforms, add_img_text
 
 
@@ -45,88 +47,29 @@ def predict(img_title_paths):
 
 if __name__=="__main__":
     # Direcciones relativas a este archivo
-    img_paths = [
-                 #"ml23/proyecto_final/test_imgs/1_prueba.jpg",
-                 "./test_imgs/2_prueba.jpg",
-                 "./test_imgs/0.jpg",
-                 "./test_imgs/1.jpg",
-                 "./test_imgs/2.jpg",
-                 "./test_imgs/3.jpg",
-                 "./test_imgs/4.jpg",
-                 "./test_imgs/5.jpg",
-                 "./test_imgs/6.jpg",
-                 "./test_imgs/7.jpg",
-                 "./test_imgs/8.jpg",
-                 "./test_imgs/9.jpg",
-                 "./test_imgs/Azul_0.jpg",
-                 "./test_imgs/Azul_1.jpg",
-                 "./test_imgs/Azul_2.jpg",
-                 "./test_imgs/Azul_3.jpg",
-                 "./test_imgs/Azul_4.jpg",
-                 "./test_imgs/Azul_5.jpg",
-                 "./test_imgs/Azul_6.jpg",
-                 "./test_imgs/Azul_7.jpg",
-                 "./test_imgs/Azul_8.jpg",
-                 "./test_imgs/Azul_9.jpg",
-                 "./test_imgs/Blur_0.jpg",
-                 "./test_imgs/Blur_1.jpg",
-                 "./test_imgs/Blur_2.jpg",
-                 "./test_imgs/Blur_3.jpg",
-                 "./test_imgs/Blur_4.jpg",
-                 "./test_imgs/Blur_5.jpg",
-                 "./test_imgs/Blur_6.jpg",
-                 "./test_imgs/Blur_7.jpg",
-                 "./test_imgs/Blur_8.jpg",
-                 "./test_imgs/Blur_9.jpg",
-                 "./test_imgs/Noise_0.jpg",
-                 "./test_imgs/Noise_1.jpg",
-                 "./test_imgs/Noise_2.jpg",
-                 "./test_imgs/Noise_3.jpg",
-                 "./test_imgs/Noise_4.jpg",
-                 "./test_imgs/Noise_5.jpg",
-                 "./test_imgs/Noise_6.jpg",
-                 "./test_imgs/Noise_7.jpg",
-                 "./test_imgs/Noise_8.jpg",
-                 "./test_imgs/Noise_9.jpg",
-                 "./test_imgs/Pixel_0.jpg",
-                 "./test_imgs/Pixel_1.jpg",
-                 "./test_imgs/Pixel_2.jpg",
-                 "./test_imgs/Pixel_3.jpg",
-                 "./test_imgs/Pixel_4.jpg",
-                 "./test_imgs/Pixel_5.jpg",
-                 "./test_imgs/Pixel_6.jpg",
-                 "./test_imgs/Pixel_7.jpg",
-                 "./test_imgs/Pixel_8.jpg",
-                 "./test_imgs/Pixel_9.jpg",
-                 "./test_imgs/Rojo_0.jpg",
-                 "./test_imgs/Rojo_1.jpg",
-                 "./test_imgs/Rojo_2.jpg",
-                 "./test_imgs/Rojo_3.jpg",
-                 "./test_imgs/Rojo_4.jpg",
-                 "./test_imgs/Rojo_5.jpg",
-                 "./test_imgs/Rojo_6.jpg",
-                 "./test_imgs/Rojo_7.jpg",
-                 "./test_imgs/Rojo_8.jpg",
-                 "./test_imgs/Rojo_9.jpg",
-                 "./test_imgs/Rotate_0.jpg",
-                 "./test_imgs/Rotate_1.jpg",
-                 "./test_imgs/Rotate_2.jpg",
-                 "./test_imgs/Rotate_3.jpg",
-                 "./test_imgs/Rotate_4.jpg",
-                 "./test_imgs/Rotate_5.jpg",
-                 "./test_imgs/Rotate_6.jpg",
-                 "./test_imgs/Rotate_7.jpg",
-                 "./test_imgs/Rotate_8.jpg",
-                 "./test_imgs/Rotate_9.jpg",
-                 "./test_imgs/Verde_0.jpg",
-                 "./test_imgs/Verde_1.jpg",
-                 "./test_imgs/Verde_2.jpg",
-                 "./test_imgs/Verde_3.jpg",
-                 "./test_imgs/Verde_4.jpg",
-                 "./test_imgs/Verde_5.jpg",
-                 "./test_imgs/Verde_6.jpg",
-                 "./test_imgs/Verde_7.jpg",
-                 "./test_imgs/Verde_8.jpg",
-                 "./test_imgs/Verde_9.jpg",
-                 ]
-    predict(img_paths)
+    modelo = Network(28, 10)
+    modelo.load_model("modelo4.pth")
+    cost_function=nn.CrossEntropyLoss()
+    val_dataset, val_loader = \
+        get_loader("val",
+                    batch_size=1,
+                    shuffle=False)
+    for i, batch in enumerate(val_loader, 0):
+        batch_imgs = batch[0]
+        batch_labels = batch[1].cuda()
+        device = modelo.device
+        batch_labels = batch_labels.to(device)
+        with torch.inference_mode():
+            # TODO: realiza un forward pass, calcula el loss y acumula el costo
+            outputs,proba=modelo(batch_imgs)
+            costo= cost_function(outputs,batch_labels)
+            pred = torch.argmax(proba, -1).item()
+            pred_label = str(pred)
+
+        img=batch_imgs.cpu() 
+        img=img.numpy()
+        img = np.transpose(img[0], (1, 2, 0))
+        img = cv2.resize(img, (300, 300))
+        img = add_img_text(img.astype('float32'), f"Pred: {pred_label}")
+        cv2.imshow("prueba",img)
+        cv2.waitKey(0)

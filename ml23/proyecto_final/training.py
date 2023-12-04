@@ -52,9 +52,9 @@ def validation_step(val_loader, net, cost_function):
 
 def train():
     # Hyperparametros
-    learning_rate= 1e-4
+    learning_rate= 1e-5
     n_epochs=20
-    batch_size = 1
+    batch_size = 256
 
      # Train, validation, test loaders
     train_dataset, train_loader = \
@@ -95,12 +95,12 @@ def train():
             # TODO acumula el costo
 
             train_loss += costo.item()
-            img=batch_imgs.cpu() 
-            img=img.numpy()
-            img = np.transpose(img[0], (1, 2, 0))
-            img = cv2.resize(img, (300, 300))
-            cv2.imshow("prueba",img)
-            cv2.waitKey(0)
+            # img=batch_imgs.cpu() 
+            # img=img.numpy()
+            # img = np.transpose(img[0], (1, 2, 0))
+            # img = cv2.resize(img, (300, 300))
+            # cv2.imshow("prueba",img)
+            # cv2.waitKey(0)
 
         # TODO Calcula el costo promedio
         train_loss = train_loss / len(train_loader)
@@ -110,10 +110,10 @@ def train():
         # TODO guarda el modelo si el costo de validación es menor al mejor costo de validación
         if val_loss < best_epoch_loss:
             best_epoch_loss = val_loss
-            modelo.save_model('modelo4.pth')
+            modelo.save_model('modelo5.pth')
         if train_loss<best_epoch_loss_train:
             best_epoch_loss_train=train_loss
-            modelo.save_model('modelo4Train.pth')
+            modelo.save_model('modelo5Train.pth')
         plotter.on_epoch_end(epoch, train_loss, val_loss)
     plotter.on_train_end()
 
