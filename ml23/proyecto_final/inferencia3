@@ -27,7 +27,7 @@ def predict(img_title_paths):
         resize_value = 300
         img = cv2.resize(img, (w * resize_value // h, resize_value))
         img_resized = cv2.resize(test_img,(28,28),interpolation=cv2.INTER_LINEAR)
-        img_resized=cv2.bitwise_not(img_resized)
+        img_resized=cv2.bitwise_not(img_resized) #se utiliza para que los pixeles sean negros o blancos.
 
 
         img_resized=img_resized.astype('float32')
