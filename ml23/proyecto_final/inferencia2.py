@@ -71,5 +71,7 @@ if __name__=="__main__":
         img = np.transpose(img[0], (1, 2, 0))
         img = cv2.resize(img, (300, 300))
         img = add_img_text(img.astype('float32'), f"Pred: {pred_label}")
-        cv2.imshow("prueba",img)
-        cv2.waitKey(0)
+        # cv2.imshow("prueba",img)
+        # cv2.waitKey(0)
+    acc=sum(pred==batch_labels)*100
+    

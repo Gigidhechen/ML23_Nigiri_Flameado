@@ -52,7 +52,7 @@ def validation_step(val_loader, net, cost_function):
 
 def train():
     # Hyperparametros
-    learning_rate= 1e-5
+    learning_rate= 1e-4
     n_epochs=20
     batch_size = 256
 
@@ -110,10 +110,10 @@ def train():
         # TODO guarda el modelo si el costo de validación es menor al mejor costo de validación
         if val_loss < best_epoch_loss:
             best_epoch_loss = val_loss
-            modelo.save_model('modelo5.pth')
+            modelo.save_model('modelo7.pth')
         if train_loss<best_epoch_loss_train:
             best_epoch_loss_train=train_loss
-            modelo.save_model('modelo5Train.pth')
+            modelo.save_model('modelo7Train.pth')
         plotter.on_epoch_end(epoch, train_loss, val_loss)
     plotter.on_train_end()
 

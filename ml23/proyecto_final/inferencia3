@@ -14,7 +14,7 @@ from utils import to_numpy, get_transforms, add_img_text
 file_path = pathlib.Path(__file__).parent.absolute()
 def predict(img_title_paths):
     modelo = Network(28, 10)
-    modelo.load_model("modelo5.pth")
+    modelo.load_model("modelo7.pth")
     for path in img_title_paths:
         im_file = (file_path / path).as_posix()
         assert os.path.isfile(im_file), f"El archivo {path} no existe"
